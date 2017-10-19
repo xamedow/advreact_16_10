@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import {Route, NavLink} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {signUp} from '../../ducks/auth'
 import SignIn from '../auth/SignIn'
 import SignUp from '../auth/SignUp'
 
@@ -21,7 +23,7 @@ class AuthPage extends Component {
     }
 
     handleSignIn = (values) => console.log('---', 'sign in', values)
-    handleSignUp = (values) => console.log('---', 'sign up', values)
+    handleSignUp = ({email, password}) => this.props.signUp(email, password)
 }
 
-export default AuthPage
+export default connect(null, { signUp })(AuthPage)
