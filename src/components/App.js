@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Route} from 'react-router-dom'
 import AdminPage from './routes/Admin'
+import AuthPage from './routes/Auth'
 
 class App extends Component {
     static propTypes = {
@@ -12,6 +13,7 @@ class App extends Component {
             <div>
                 <h1>Hello world</h1>
                 <Route path = '/admin' component = {AdminPage}/>
+                <Route path = '/auth' component = {AuthPage}/>
             </div>
         )
     }
