@@ -1,6 +1,7 @@
 import {appName} from '../config'
 import {Record} from 'immutable'
 import firebase from 'firebase'
+import {createSelector} from 'reselect'
 
 /**
  * Constants
@@ -11,6 +12,8 @@ const prefix = `${appName}/${moduleName}`
 export const SIGN_UP_START = `${prefix}/SIGN_UP_START`
 export const SIGN_UP_SUCCESS = `${prefix}/SIGN_UP_SUCCESS`
 export const SIGN_UP_ERROR = `${prefix}/SIGN_UP_ERROR`
+
+export const SIGN_IN_SUCCESS = `${prefix}/SIGN_IN_SUCCESS`
 
 /**
  * Reducer
@@ -29,6 +32,7 @@ export default function reducer(state = new ReducerRecord(), action) {
             return state.set('loading', true)
 
         case SIGN_UP_SUCCESS:
+        case SIGN_IN_SUCCESS:
             return state
                 .set('user', payload.user)
                 .set('loading', false)
@@ -41,6 +45,9 @@ export default function reducer(state = new ReducerRecord(), action) {
 /**
  * Selectors
  * */
+
+export const stateSelector = state => state[moduleName]
+export const userSelector = createSelector(stateSelector, state => state.user)
 
 /**
  * Action Creators
@@ -62,3 +69,12 @@ export function signUp(email, password) {
             }))
     }
 }
+
+firebase.auth().onAuthStateChanged(user => {
+    if (!user) return
+
+    window.store.dispatch({
+        type: SIGN_IN_SUCCESS,
+        payload: { user }
+    })
+})
